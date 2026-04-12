@@ -84,7 +84,7 @@ HTTP Status: `429 Too Many Requests`
 
 ---
 
-### 2. `GET /api/gacha/history/:userId` — Riwayat Gacha User _(Bonus Point 1)_
+### 2. `GET /api/gacha/history/:userId` — Riwayat Gacha User
 
 Menampilkan histori semua gacha yang pernah dilakukan oleh user beserta hadiah yang dimenangkan (jika ada).
 
@@ -131,7 +131,7 @@ GET /api/gacha/history/user123
 
 ---
 
-### 3. `GET /api/gacha/prizes` — Daftar Hadiah & Sisa Kuota _(Bonus Point 2)_
+### 3. `GET /api/gacha/prizes` — Daftar Hadiah & Sisa Kuota
 
 Menampilkan daftar semua hadiah beserta kuota pemenang yang tersisa untuk setiap hadiah.
 
@@ -183,7 +183,7 @@ GET /api/gacha/prizes
 
 ---
 
-### 4. `GET /api/gacha/winners/:prizeName` — Daftar Pemenang Per Hadiah _(Bonus Point 3)_
+### 4. `GET /api/gacha/winners/:prizeName` — Daftar Pemenang Per Hadiah
 
 Menampilkan daftar user yang berhasil memenangkan hadiah tertentu. Nama user **disamarkan secara acak** menggunakan dua pola:
 
