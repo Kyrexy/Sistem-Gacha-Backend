@@ -16,3 +16,234 @@
 2. Create a new folder in `./src/api/components` (if needed). Remember to separate your codes to repositories, services, controllers, and routes.
 3. Add the new route in `./src/api/routes.js`.
 4. Test your new endpoints in the API client app.
+
+## Endpoints
+
+### 1. `POST /api/gacha` — Lakukan Gacha
+
+Endpoint utama untuk melakukan satu kali gacha. User hanya bisa melakukan gacha maksimal **5 kali per hari**.
+
+**Request Body (JSON):**
+
+| Field      | Type   | Required | Keterangan        |
+| ---------- | ------ | -------- | ----------------- |
+| `userId`   | string | ✅       | ID unik user      |
+| `userName` | string | ✅       | Nama lengkap user |
+
+**Contoh Request:**
+
+```json
+{
+  "userId": "user123",
+  "userName": "Jane Doe"
+}
+```
+
+**Response Sukses (Menang):**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "isWin": true,
+    "message": "Selamat! Kamu memenangkan Pulsa Rp50.000!",
+    "prize": "Pulsa Rp50.000",
+    "gachaCount": 2,
+    "remainingToday": 3
+  }
+}
+```
+
+**Response Sukses (Tidak Menang):**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "isWin": false,
+    "message": "Maaf, kamu tidak memenangkan hadiah. Coba lagi!",
+    "prize": null,
+    "gachaCount": 1,
+    "remainingToday": 4
+  }
+}
+```
+
+**Response Error (Melewati Batas Harian):**
+
+```json
+{
+  "status": "error",
+  "message": "Batas maksimal gacha hari ini (5 kali) telah tercapai."
+}
+```
+
+HTTP Status: `429 Too Many Requests`
+
+---
+
+### 2. `GET /api/gacha/history/:userId` — Riwayat Gacha User _(Bonus Point 1)_
+
+Menampilkan histori semua gacha yang pernah dilakukan oleh user beserta hadiah yang dimenangkan (jika ada).
+
+**URL Parameter:**
+
+| Parameter | Type   | Keterangan   |
+| --------- | ------ | ------------ |
+| `userId`  | string | ID unik user |
+
+**Contoh Request:**
+
+```
+GET /api/gacha/history/user123
+```
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "userId": "user123",
+    "totalGacha": 3,
+    "history": [
+      {
+        "gachaDate": "2025-04-12T08:30:00.000Z",
+        "isWin": true,
+        "prize": "Pulsa Rp50.000"
+      },
+      {
+        "gachaDate": "2025-04-12T08:25:00.000Z",
+        "isWin": false,
+        "prize": null
+      },
+      {
+        "gachaDate": "2025-04-11T10:00:00.000Z",
+        "isWin": false,
+        "prize": null
+      }
+    ]
+  }
+}
+```
+
+---
+
+### 3. `GET /api/gacha/prizes` — Daftar Hadiah & Sisa Kuota _(Bonus Point 2)_
+
+Menampilkan daftar semua hadiah beserta kuota pemenang yang tersisa untuk setiap hadiah.
+
+**Contoh Request:**
+
+```
+GET /api/gacha/prizes
+```
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "data": [
+    {
+      "name": "Emas 10 gram",
+      "quota": 1,
+      "remainingQuota": 1,
+      "claimed": 0
+    },
+    {
+      "name": "Smartphone X",
+      "quota": 5,
+      "remainingQuota": 4,
+      "claimed": 1
+    },
+    {
+      "name": "Smartwatch Y",
+      "quota": 10,
+      "remainingQuota": 10,
+      "claimed": 0
+    },
+    {
+      "name": "Voucher Rp100.000",
+      "quota": 100,
+      "remainingQuota": 98,
+      "claimed": 2
+    },
+    {
+      "name": "Pulsa Rp50.000",
+      "quota": 500,
+      "remainingQuota": 495,
+      "claimed": 5
+    }
+  ]
+}
+```
+
+---
+
+### 4. `GET /api/gacha/winners/:prizeName` — Daftar Pemenang Per Hadiah _(Bonus Point 3)_
+
+Menampilkan daftar user yang berhasil memenangkan hadiah tertentu. Nama user **disamarkan secara acak** menggunakan dua pola:
+
+- Pola 1: `J*** Doe` (huruf pertama + bintang, nama akhir utuh)
+- Pola 2: `J*** D*e` (huruf pertama & terakhir tiap kata tetap, tengah disamarkan)
+
+**URL Parameter:**
+
+| Parameter   | Type   | Keterangan                           |
+| ----------- | ------ | ------------------------------------ |
+| `prizeName` | string | Nama hadiah (URL-encoded jika perlu) |
+
+**Contoh Request:**
+
+```
+GET /api/gacha/winners/Pulsa%20Rp50.000
+```
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "prize": "Pulsa Rp50.000",
+    "totalWinners": 2,
+    "quota": 500,
+    "winners": [
+      {
+        "userName": "J*** Doe",
+        "gachaDate": "2025-04-12T08:30:00.000Z"
+      },
+      {
+        "userName": "J*** D*e",
+        "gachaDate": "2025-04-11T15:20:00.000Z"
+      }
+    ]
+  }
+}
+```
+
+**Response Error (Hadiah tidak ditemukan):**
+
+```json
+{
+  "status": "error",
+  "message": "Hadiah tidak ditemukan."
+}
+```
+
+HTTP Status: `404 Not Found`
+
+---
+
+## Daftar Hadiah & Probabilitas
+
+| No  | Hadiah            | Kuota | Probabilitas Menang |
+| --- | ----------------- | ----- | ------------------- |
+| 1   | Emas 10 gram      | 1     | 0.5%                |
+| 2   | Smartphone X      | 5     | 2%                  |
+| 3   | Smartwatch Y      | 10    | 4%                  |
+| 4   | Voucher Rp100.000 | 100   | 15%                 |
+| 5   | Pulsa Rp50.000    | 500   | 30%                 |
+
+> Catatan: Kuota di atas adalah kuota dalam 1 periode undian, bukan per hari.
