@@ -1,0 +1,8 @@
+API buat dapet list hadiah(GET)
+http://localhost:5000/api/gacha/prizes
+API buat gacha(POST)
+http://localhost:5000/api/gacha
+API buat dapet history gacha user(GET)
+http://localhost:5000/api/gacha/history/userID
+API buat dapet list pemenang hadiah(GET)
+http://localhost:5000/api/gacha/winners
