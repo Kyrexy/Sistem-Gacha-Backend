@@ -17,7 +17,9 @@
 3. Add the new route in `./src/api/routes.js`.
 4. Test your new endpoints in the API client app.
 
-## Endpoints
+## Tugas-EndpointGacha-535250142
+
+## API Endpoint
 
 ### 1. `POST /api/gacha` — Lakukan Gacha
 
