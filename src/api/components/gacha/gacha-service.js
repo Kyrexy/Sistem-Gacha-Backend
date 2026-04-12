@@ -13,7 +13,7 @@ const performGacha = async ({ userId, userName }) => {
   const todayCount = await gachaRepository.countUserGachaToday(userId);
   if (todayCount >= MAX_GACHA_PER_DAY) {
     const error = new Error(
-      'Batas maksimal gacha hari ini (5 kali) telah tercapai.'
+      'Sudah sampai batas gacha untuk hari ini(5 kali)'
     );
     error.statusCode = 429;
     throw error;
@@ -47,8 +47,8 @@ const performGacha = async ({ userId, userName }) => {
   };
 
   if (wonPrize) {
-    const updated = await gachaRepository.decreasePrizeQuota(wonPrize._id);
-    if (!updated || updated.remainingQuota < 0) {
+    const updated = await gachaRepository.decreasePrizeKuota(wonPrize._id);
+    if (!updated || updated.sisaKuota < 0) {
       wonPrize = null;
     } else {
       logData.isWin = true;
@@ -62,7 +62,7 @@ const performGacha = async ({ userId, userName }) => {
   if (logData.isWin) {
     return {
       isWin: true,
-      message: `Selamat! Kamu memenangkan ${logData.prizeName}!`,
+      message: `Ubur ubur ikan lele,kamu memenangkan ${logData.prizeName}!`,
       prize: logData.prizeName,
       gachaCount: todayCount + 1,
       remainingToday: MAX_GACHA_PER_DAY - (todayCount + 1),
@@ -71,7 +71,7 @@ const performGacha = async ({ userId, userName }) => {
 
   return {
     isWin: false,
-    message: 'Maaf, kamu tidak memenangkan hadiah. Coba lagi!',
+    message: 'Ubur ubur ikan lele,Kamu tidak beruntung le,coba lagi',
     prize: null,
     gachaCount: todayCount + 1,
     remainingToday: MAX_GACHA_PER_DAY - (todayCount + 1),
@@ -91,9 +91,9 @@ const getPrizeList = async () => {
   const prizes = await gachaRepository.getAllPrizes();
   return prizes.map((p) => ({
     name: p.name,
-    quota: p.quota,
-    remainingQuota: p.remainingQuota,
-    claimed: p.quota - p.remainingQuota,
+    Kuota: p.Kuota,
+    sisaKuota: p.sisaKuota,
+    claimed: p.Kuota - p.sisaKuota,
   }));
 };
 
@@ -109,7 +109,7 @@ const getWinnersByPrize = async (prizeName) => {
   return {
     prize: prize.name,
     totalWinners: winners.length,
-    quota: prize.quota,
+    Kuota: prize.Kuota,
     winners: winners.map((w) => ({
       userName: w.userName,
       gachaDate: w.gachaDate,

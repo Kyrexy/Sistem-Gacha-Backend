@@ -147,32 +147,32 @@ GET /api/gacha/prizes
   "data": [
     {
       "name": "Emas 10 gram",
-      "quota": 1,
-      "remainingQuota": 1,
+      "Kuota": 1,
+      "sisaKuota": 1,
       "claimed": 0
     },
     {
       "name": "Smartphone X",
-      "quota": 5,
-      "remainingQuota": 4,
+      "Kuota": 5,
+      "sisaKuota": 4,
       "claimed": 1
     },
     {
       "name": "Smartwatch Y",
-      "quota": 10,
-      "remainingQuota": 10,
+      "Kuota": 10,
+      "sisaKuota": 10,
       "claimed": 0
     },
     {
       "name": "Voucher Rp100.000",
-      "quota": 100,
-      "remainingQuota": 98,
+      "Kuota": 100,
+      "sisaKuota": 98,
       "claimed": 2
     },
     {
       "name": "Pulsa Rp50.000",
-      "quota": 500,
-      "remainingQuota": 495,
+      "Kuota": 500,
+      "sisaKuota": 495,
       "claimed": 5
     }
   ]
@@ -208,7 +208,7 @@ GET /api/gacha/winners/Pulsa%20Rp50.000
   "data": {
     "prize": "Pulsa Rp50.000",
     "totalWinners": 2,
-    "quota": 500,
+    "Kuota": 500,
     "winners": [
       {
         "userName": "J*** Doe",

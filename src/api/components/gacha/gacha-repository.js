@@ -17,14 +17,14 @@ const countUserGachaToday = async (userId) => {
 };
 
 const getAvailablePrizes = async () =>
-  Prize.find({ remainingQuota: { $gt: 0 } });
+  Prize.find({ sisaKuota: { $gt: 0 } });
 
 const getAllPrizes = async () => Prize.find();
 
-const decreasePrizeQuota = async (prizeId) =>
+const decreasePrizeKuota = async (prizeId) =>
   Prize.findByIdAndUpdate(
     prizeId,
-    { $inc: { remainingQuota: -1 } },
+    { $inc: { sisaKuota: -1 } },
     { new: true }
   );
 
@@ -67,7 +67,7 @@ module.exports = {
   countUserGachaToday,
   getAvailablePrizes,
   getAllPrizes,
-  decreasePrizeQuota,
+  decreasePrizeKuota,
   saveGachaLog,
   getUserGachaHistory,
   getWinnersByPrize,

@@ -4,8 +4,8 @@ module.exports = (db) =>
     db.Schema(
       {
         name: { type: String, required: true },
-        quota: { type: Number, required: true },
-        remainingQuota: { type: Number, required: true },
+        Kuota: { type: Number, required: true },
+        sisaKuota: { type: Number, required: true },
       },
       { timestamps: true }
     )
