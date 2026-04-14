@@ -47,7 +47,7 @@ Endpoint utama untuk melakukan satu kali gacha. User hanya bisa melakukan gacha 
 {
   "status": "success",
   "data": {
-    "isWin": true,
+    "statusMenang": true,
     "message": "Selamat! Kamu memenangkan Pulsa Rp50.000!",
     "prize": "Pulsa Rp50.000",
     "gachaCount": 2,
@@ -62,7 +62,7 @@ Endpoint utama untuk melakukan satu kali gacha. User hanya bisa melakukan gacha 
 {
   "status": "success",
   "data": {
-    "isWin": false,
+    "statusMenang": false,
     "message": "Maaf, kamu tidak memenangkan hadiah. Coba lagi!",
     "prize": null,
     "gachaCount": 1,
@@ -111,17 +111,17 @@ GET /api/gacha/history/user123
     "history": [
       {
         "gachaDate": "2025-04-12T08:30:00.000Z",
-        "isWin": true,
+        "statusMenang": true,
         "prize": "Pulsa Rp50.000"
       },
       {
         "gachaDate": "2025-04-12T08:25:00.000Z",
-        "isWin": false,
+        "statusMenang": false,
         "prize": null
       },
       {
         "gachaDate": "2025-04-11T10:00:00.000Z",
-        "isWin": false,
+        "statusMenang": false,
         "prize": null
       }
     ]
@@ -237,15 +237,3 @@ GET /api/gacha/winners/Pulsa%20Rp50.000
 HTTP Status: `404 Not Found`
 
 ---
-
-## Daftar Hadiah & Probabilitas
-
-| No  | Hadiah            | Kuota | Probabilitas Menang |
-| --- | ----------------- | ----- | ------------------- |
-| 1   | Emas 10 gram      | 1     | 0.5%                |
-| 2   | Smartphone X      | 5     | 2%                  |
-| 3   | Smartwatch Y      | 10    | 4%                  |
-| 4   | Voucher Rp100.000 | 100   | 15%                 |
-| 5   | Pulsa Rp50.000    | 500   | 30%                 |
-
-> Catatan: Kuota di atas adalah kuota dalam 1 periode undian, bukan per hari.

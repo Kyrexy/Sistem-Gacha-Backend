@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const Prize = require('../models/prize.model');
+const Prize = require('./models/prize.model');
 
 const prizes = [
   { name: 'Emas 10 gram', Kuota: 1, sisaKuota: 1, probability: 0.005 },

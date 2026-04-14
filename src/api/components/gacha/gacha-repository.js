@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const NameHider = require('../../../utils/NameHider');
 
 const GachaLog = mongoose.model('GachaLog');
 const Prize = mongoose.model('Prize');
@@ -16,17 +17,12 @@ const countUserGachaToday = async (userId) => {
   });
 };
 
-const getAvailablePrizes = async () =>
-  Prize.find({ sisaKuota: { $gt: 0 } });
+const getAvailablePrizes = async () => Prize.find({ sisaKuota: { $gt: 0 } });
 
 const getAllPrizes = async () => Prize.find();
 
 const decreasePrizeKuota = async (prizeId) =>
-  Prize.findByIdAndUpdate(
-    prizeId,
-    { $inc: { sisaKuota: -1 } },
-    { new: true }
-  );
+  Prize.findByIdAndUpdate(prizeId, { $inc: { sisaKuota: -1 } }, { new: true });
 
 const saveGachaLog = async (data) => {
   const log = new GachaLog(data);
@@ -37,30 +33,16 @@ const getUserGachaHistory = async (userId) =>
   GachaLog.find({ userId }).sort({ gachaDate: -1 }).populate('prize');
 
 const getWinnersByPrize = async (prizeId) => {
-  const winners = await GachaLog.find({ prize: prizeId, isWin: true }).sort({
+  const winners = await GachaLog.find({
+    prize: prizeId,
+    statusMenang: true,
+  }).sort({
     gachaDate: -1,
   });
   return winners.map((w) => ({
     ...w.toObject(),
-    userName: maskName(w.userName),
+    userName: NameHider(w.userName),
   }));
-};
-
-const maskName = (name) => {
-  const parts = name.trim().split(' ');
-  const style = Math.random() < 0.5 ? 1 : 2;
-
-  return parts
-    .map((part, index) => {
-      if (part.length === 0) return part;
-      if (style === 1) {
-        if (index === parts.length - 1 && parts.length > 1) return part;
-        return part[0] + '*'.repeat(part.length - 1);
-      }
-      if (part.length <= 2) return part[0] + '*'.repeat(part.length - 1);
-      return part[0] + '*'.repeat(part.length - 2) + part[part.length - 1];
-    })
-    .join(' ');
 };
 
 module.exports = {

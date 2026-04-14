@@ -1,29 +1,47 @@
 const gachaService = require('./gacha-service');
 
-const doGacha = async (req, res) => {
-  const { userId, userName } = req.body;
+const doGacha = async (request, response) => {
+  const { userId, userName } = request.body;
 
   if (!userId || !userName) {
-    return res.status(400).json({
+    return response.status(400).json({
       status: 'error',
-      message: 'userId dan userName gabole kosong.',
+      message: 'userId dan userName gabole kosong',
     });
   }
 
-  const result = await gachaService.performGacha({ userId, userName });
+  const result = await gachaService.performGacha(userId, userName);
 
-  return res.status(200).json({
+  if (result === null) {
+    return response.status(400).json({
+      status: 'error',
+      message: 'Limit gacha harian anda sudah habis!',
+    });
+  }
+
+  if (result.statusMenang === false) {
+    return response.status(200).json({
+      status: 'success',
+      message: 'Gacha (1x)',
+      detail: 'Maaf, anda tidak memenangkan apa-apa, coba lagi!',
+      data: result,
+    });
+  }
+
+  return response.status(200).json({
     status: 'success',
+    message: 'Gacha (1x)',
+    detail: `Anda Hoki! Anda menang ${result.prize}!`,
     data: result,
   });
 };
 
-const getUserHistory = async (req, res) => {
-  const { userId } = req.params;
+const getUserHistory = async (request, response) => {
+  const { userId } = request.params;
 
   const history = await gachaService.getUserHistory(userId);
 
-  return res.status(200).json({
+  return response.status(200).json({
     status: 'success',
     data: {
       userId,
@@ -33,23 +51,23 @@ const getUserHistory = async (req, res) => {
   });
 };
 
-const getPrizeList = async (req, res) => {
+const getPrizeList = async (request, response) => {
   const prizes = await gachaService.getPrizeList();
 
-  return res.status(200).json({
+  return response.status(200).json({
     status: 'success',
     data: prizes,
   });
 };
 
-const getWinnersByPrize = async (req, res) => {
-  const { prizeName } = req.params;
+const getWinnersByPrize = async (request, response) => {
+  const { prizeName } = request.params;
 
   const result = await gachaService.getWinnersByPrize(
     decodeURIComponent(prizeName)
   );
 
-  return res.status(200).json({
+  return response.status(200).json({
     status: 'success',
     data: result,
   });

@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const config = require('../core/config');
 const logger = require('../core/logger')('app');
 
-// Join the database connection string
 const connectionString = new URL(config.database.connection);
 connectionString.pathname += config.database.name;
 
@@ -24,7 +23,6 @@ fs.readdirSync(__dirname)
       file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
   )
   .forEach((file) => {
-    // eslint-disable-next-line import/no-dynamic-require, global-require
     const model = require(path.join(__dirname, file))(mongoose);
     dbExports[model.modelName] = model;
   });
@@ -42,7 +40,7 @@ db.once('open', async () => {
       { name: 'Voucher Rp100.000', Kuota: 100, sisaKuota: 100 },
       { name: 'Pulsa Rp50.000', Kuota: 500, sisaKuota: 500 },
     ]);
-    logger.info('Prizes seeded!');
+    logger.info('Hadiah Sudah Dimasukkan');
   }
 });
 
