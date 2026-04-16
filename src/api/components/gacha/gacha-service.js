@@ -56,7 +56,7 @@ async function getPrizeList() {
 }
 
 async function getWinnersByPrize(prizeName) {
-  return gachaRepository.getWinnersByPrize(prizeName);
+  return gachaRepository.getWinnersByPrizeName(prizeName);
 }
 
 module.exports = {

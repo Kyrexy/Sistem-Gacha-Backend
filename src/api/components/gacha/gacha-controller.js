@@ -23,7 +23,7 @@ const doGacha = async (request, response) => {
     return response.status(200).json({
       status: 'success',
       message: 'Gacha (1x)',
-      detail: 'Maaf, anda tidak memenangkan apa-apa, coba lagi!',
+      detail: 'Anda kurang hoki coba lagi!',
       data: result,
     });
   }

@@ -32,9 +32,22 @@ const saveGachaLog = async (data) => {
 const getUserGachaHistory = async (userId) =>
   GachaLog.find({ userId }).sort({ gachaDate: -1 }).populate('prize');
 
-const getWinnersByPrize = async (prizeId) => {
+const getWinnersByPrizeId = async (prizeId) => {
   const winners = await GachaLog.find({
     prize: prizeId,
+    statusMenang: true,
+  }).sort({
+    gachaDate: -1,
+  });
+  return winners.map((w) => ({
+    ...w.toObject(),
+    userName: NameHider(w.userName),
+  }));
+};
+
+const getWinnersByPrizeName = async (prizeName) => {
+  const winners = await GachaLog.find({
+    prize: prizeName,
     statusMenang: true,
   }).sort({
     gachaDate: -1,
@@ -52,5 +65,6 @@ module.exports = {
   decreasePrizeKuota,
   saveGachaLog,
   getUserGachaHistory,
-  getWinnersByPrize,
+  getWinnersByPrizeId,
+  getWinnersByPrizeName,
 };

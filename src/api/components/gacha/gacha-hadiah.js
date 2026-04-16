@@ -3,8 +3,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const Prize = require('./models/prize.model');
-
 const prizes = [
   { name: 'Emas 10 gram', Kuota: 1, sisaKuota: 1, probability: 0.005 },
   { name: 'Smartphone X', Kuota: 5, sisaKuota: 5, probability: 0.02 },
@@ -20,15 +18,12 @@ const prizes = [
 
 const seed = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Connected to MongoDB');
+    await mongoose.connect(process.env.DB_CONNECTION);
+
+    const Prize = require('../../../models/prize.model')(mongoose);
 
     await Prize.deleteMany({});
     await Prize.insertMany(prizes);
-
-    console.log('✅ Berhasil Mengisi Data Hadiah:');
-    prizes.forEach((p) => console.log(`  - ${p.name} (kuota: ${p.Kuota})`));
-
     process.exit(0);
   } catch (err) {
     console.error('❌ Pengisian Data Hadiah Gagal:', err);
