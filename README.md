@@ -23,14 +23,7 @@
 
 ### 1. `POST /api/gacha` — Lakukan Gacha
 
-Endpoint utama untuk melakukan satu kali gacha. User hanya bisa melakukan gacha maksimal **5 kali per hari**.
-
-**Request Body (JSON):**
-
-| Field      | Type   | Required | Keterangan        |
-| ---------- | ------ | -------- | ----------------- |
-| `userId`   | string | ✅       | ID unik user      |
-| `userName` | string | ✅       | Nama lengkap user |
+Endpoint utama untuk melakukan satu kali gacha. User hanya bisa melakukan gacha maksimal **5 kali per hari**
 
 **Contoh Request:**
 
@@ -86,13 +79,7 @@ HTTP Status: `429 Too Many Requests`
 
 ### 2. `GET /api/gacha/history/:userId` — Riwayat Gacha User
 
-Menampilkan histori semua gacha yang pernah dilakukan oleh user beserta hadiah yang dimenangkan (jika ada).
-
-**URL Parameter:**
-
-| Parameter | Type   | Keterangan   |
-| --------- | ------ | ------------ |
-| `userId`  | string | ID unik user |
+Menampilkan histori semua gacha yang pernah dilakukan oleh user beserta hadiah yang dimenangkan
 
 **Contoh Request:**
 
@@ -185,16 +172,10 @@ GET /api/gacha/prizes
 
 ### 4. `GET /api/gacha/winners/:prizeName` — Daftar Pemenang Per Hadiah
 
-Menampilkan daftar user yang berhasil memenangkan hadiah tertentu. Nama user **disamarkan secara acak** menggunakan dua pola:
+Menampilkan daftar user yang berhasil memenangkan hadiah sesuai id hadiah yang dimasukkan,nama user disamarkan
 
 - Pola 1: `J*** Doe` (huruf pertama + bintang, nama akhir utuh)
 - Pola 2: `J*** D*e` (huruf pertama & terakhir tiap kata tetap, tengah disamarkan)
-
-**URL Parameter:**
-
-| Parameter   | Type   | Keterangan                           |
-| ----------- | ------ | ------------------------------------ |
-| `prizeName` | string | Nama hadiah (URL-encoded jika perlu) |
 
 **Contoh Request:**
 
@@ -233,7 +214,5 @@ GET /api/gacha/winners/Pulsa%20Rp50.000
   "message": "Hadiah tidak ditemukan."
 }
 ```
-
-HTTP Status: `404 Not Found`
 
 ---
