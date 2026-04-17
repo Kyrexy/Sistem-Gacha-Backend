@@ -29,8 +29,8 @@ Endpoint utama untuk melakukan satu kali gacha. User hanya bisa melakukan gacha 
 
 ```json
 {
-  "userId": "user123",
-  "userName": "Jane Doe"
+    "userName":"Giorno Giovanna",
+    "userId":"12345678"
 }
 ```
 
@@ -73,8 +73,6 @@ Endpoint utama untuk melakukan satu kali gacha. User hanya bisa melakukan gacha 
 }
 ```
 
-HTTP Status: `429 Too Many Requests`
-
 ---
 
 ### 2. `GET /api/gacha/history/:userId` — Riwayat Gacha User
@@ -84,35 +82,45 @@ Menampilkan histori semua gacha yang pernah dilakukan oleh user beserta hadiah y
 **Contoh Request:**
 
 ```
-GET /api/gacha/history/user123
+GET api/gacha/history/userId
 ```
 
 **Response:**
 
 ```json
 {
-  "status": "success",
-  "data": {
-    "userId": "user123",
-    "totalGacha": 3,
-    "history": [
-      {
-        "gachaDate": "2025-04-12T08:30:00.000Z",
-        "statusMenang": true,
-        "prize": "Pulsa Rp50.000"
-      },
-      {
-        "gachaDate": "2025-04-12T08:25:00.000Z",
-        "statusMenang": false,
-        "prize": null
-      },
-      {
-        "gachaDate": "2025-04-11T10:00:00.000Z",
-        "statusMenang": false,
-        "prize": null
-      }
-    ]
-  }
+	"status": "success",
+	"data": {
+		"userId": "12345678",
+		"totalGacha": 5,
+		"history": [
+			{
+				"gachaDate": "2026-04-17T15:20:49.393Z",
+				"statusMenang": false,
+				"prize": null
+			},
+			{
+				"gachaDate": "2026-04-17T15:20:45.381Z",
+				"statusMenang": false,
+				"prize": null
+			},
+			{
+				"gachaDate": "2026-04-17T15:20:40.433Z",
+				"statusMenang": true,
+				"prize": "Voucher Rp100.000"
+			},
+			{
+				"gachaDate": "2026-04-17T15:20:36.892Z",
+				"statusMenang": false,
+				"prize": null
+			},
+			{
+				"gachaDate": "2026-04-17T15:19:54.950Z",
+				"statusMenang": false,
+				"prize": null
+			}
+		]
+	}
 }
 ```
 
@@ -125,93 +133,83 @@ Menampilkan daftar semua hadiah beserta kuota pemenang yang tersisa untuk setiap
 **Contoh Request:**
 
 ```
-GET /api/gacha/prizes
+GET /api/gacha/prizes/prizes
 ```
 
 **Response:**
 
 ```json
-{
-  "status": "success",
-  "data": [
-    {
-      "name": "Emas 10 gram",
-      "Kuota": 1,
-      "sisaKuota": 1,
-      "claimed": 0
-    },
-    {
-      "name": "Smartphone X",
-      "Kuota": 5,
-      "sisaKuota": 4,
-      "claimed": 1
-    },
-    {
-      "name": "Smartwatch Y",
-      "Kuota": 10,
-      "sisaKuota": 10,
-      "claimed": 0
-    },
-    {
-      "name": "Voucher Rp100.000",
-      "Kuota": 100,
-      "sisaKuota": 98,
-      "claimed": 2
-    },
-    {
-      "name": "Pulsa Rp50.000",
-      "Kuota": 500,
-      "sisaKuota": 495,
-      "claimed": 5
-    }
-  ]
+{{
+	"status": "success",
+	"data": [
+		{
+			"_id": "69e0457f8c3e232efe3fcb28",
+			"name": "Emas 10 gram",
+			"Kuota": 1,
+			"sisaKuota": 1,
+			"__v": 0
+		},
+		{
+			"_id": "69e0457f8c3e232efe3fcb29",
+			"name": "Smartphone X",
+			"Kuota": 5,
+			"sisaKuota": 5,
+			"__v": 0
+		},
+		{
+			"_id": "69e0457f8c3e232efe3fcb2a",
+			"name": "Smartwatch Y",
+			"Kuota": 10,
+			"sisaKuota": 10,
+			"__v": 0
+		},
+		{
+			"_id": "69e0457f8c3e232efe3fcb2b",
+			"name": "Voucher Rp100.000",
+			"Kuota": 100,
+			"sisaKuota": 100,
+			"__v": 0
+		},
+		{
+			"_id": "69e0457f8c3e232efe3fcb2c",
+			"name": "Pulsa Rp50.000",
+			"Kuota": 500,
+			"sisaKuota": 500,
+			"__v": 0
+		}
+	]
 }
 ```
 
 ---
 
-### 4. `GET /api/gacha/winners/:prizeName` — Daftar Pemenang Per Hadiah
+### 4. `GET /api/gacha/winners/prizeId` — Daftar Pemenang Per Hadiah
 
 Menampilkan daftar user yang berhasil memenangkan hadiah sesuai id hadiah yang dimasukkan,nama user disamarkan
-
-- Pola 1: `J*** Doe` (huruf pertama + bintang, nama akhir utuh)
-- Pola 2: `J*** D*e` (huruf pertama & terakhir tiap kata tetap, tengah disamarkan)
 
 **Contoh Request:**
 
 ```
-GET /api/gacha/winners/Pulsa%20Rp50.000
+GET /api/gacha/winners/prizeId
 ```
 
 **Response:**
 
 ```json
 {
-  "status": "success",
-  "data": {
-    "prize": "Pulsa Rp50.000",
-    "totalWinners": 2,
-    "Kuota": 500,
-    "winners": [
-      {
-        "userName": "J*** Doe",
-        "gachaDate": "2025-04-12T08:30:00.000Z"
-      },
-      {
-        "userName": "J*** D*e",
-        "gachaDate": "2025-04-11T15:20:00.000Z"
-      }
-    ]
-  }
-}
-```
-
-**Response Error (Hadiah tidak ditemukan):**
-
-```json
-{
-  "status": "error",
-  "message": "Hadiah tidak ditemukan."
+	"status": "success",
+	"data": [
+		{
+			"_id": "69e252d413e6f844a84a8685",
+			"userId": "123456789",
+			"userName": "G****o G******a",
+			"statusMenang": true,
+			"prize": "69e0457f8c3e232efe3fcb2a",
+			"prizeName": "Smartwatch Y",
+			"gachaDate": "2026-04-17T15:33:40.683Z",
+			"__v": 0
+		}
+	]
 }
 ```
 

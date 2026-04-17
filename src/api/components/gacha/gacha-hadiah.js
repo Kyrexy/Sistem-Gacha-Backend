@@ -13,7 +13,9 @@ const prizes = [
 
 const seed = async () => {
   try {
-    await mongoose.connect(process.env.DB_CONNECTION);
+    const connectionString = new URL(process.env.DB_CONNECTION);
+    connectionString.pathname += process.env.DB_NAME;
+    await mongoose.connect(connectionString.toString());
 
     const Prize = require('../../../models/prize.model')(mongoose);
 
